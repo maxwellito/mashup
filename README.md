@@ -1,5 +1,3 @@
-# Mashup
+# MashupRx
 
-[DEPRECATED]
-
-![](http://cdn.smosh.com/sites/default/files/ftpuploads/bloguploads/1213/broken-gif-kane-west.gif)
+### Oups. You found my laboratory. This is not good. More will follow, I promess.
