@@ -1,6 +1,6 @@
 class SpritePlayer {
 
-  constructor (width, height) {
+  constructor (width, height, obs) {
     this.createCanvas(width, height);
     this.browserFramerate = 1000/60;
     this.browserTimepoint = null;
@@ -14,6 +14,10 @@ class SpritePlayer {
     this.input = 44;
 
     this.runnerBinded = this.frameRunner.bind(this);
+    obs.subscribe(e => {
+      this.setSprite(e.media)
+      this.play()
+    })
   }
 
   setSprite (sprite) {
@@ -43,6 +47,7 @@ class SpritePlayer {
     this.height = canvas.height = height;
 
     this.el  = canvas;
+    document.body.appendChild(this.el)
     this.ctx = canvas.getContext('2d');
   }
 

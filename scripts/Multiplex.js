@@ -1,10 +1,10 @@
 class Multiplex {
 
   constructor (deviceList) {
-    this.devices      = deviceList;
-    this.oPress       = null;
-    this.oRelease     = null;
-    this.oUpdate      = null;
+    this.devices     = deviceList;
+    this.press       = null;
+    this.release     = null;
+    this.update      = null;
   }
 
   initialise () {
@@ -15,43 +15,70 @@ class Multiplex {
     return window
       .navigator
       .requestMIDIAccess()
-      .then(function (access) {
+      .then((access) => {
         if('function' === typeof access.inputs || !access.inputs) {
           throw new Error('Your browser is deprecated and use an old Midi API.');
         }
-        var inputs = access.inputs.values(),
-            missingDevices = [];
-        this.devices.map(i => i.input = null);
-        for (let input = inputs.next(); input && !input.done; input = inputs.next()) {
-          let device = this.devices.find(i => i.name === input.name);
-          if (device) device.input = input.value;
-        }
-        let compatible = this.devices.filter(i => i.type === 'midi' && !i.input).length;
-        return compatible ? {isReady: true} : {missingDevices};
-      }.bind(this));
+        var inputs = Array.from(access.inputs.values()),
+            connectedDevicesName = inputs.map(i => i.name),
+            missingDevices;
+
+        // Let's assume, there's no device doublons.
+        missingDevices = this.devices.filter(device => {
+          if (device.type === 'midi') {
+            let index = connectedDevicesName.indexOf(device.name);
+            if (!~index) {
+              return true;
+            }
+            device.input = inputs[index];
+          }
+        });
+        missingDevices = missingDevices.map(i => i.name);
+        console.log('missing devices', missingDevices)
+        console.log('connected devices', connectedDevicesName)
+        return missingDevices.length ? {missingDevices} : {isReady: true, devices: connectedDevicesName};
+      });
   }
 
   start () {
-    var oPress   = null;
-    var oRelease = null;
-    var oUpdate  = null;
+    var pressObs,
+        releaseObs,
+        updateObs;
+
+    this.press   = Rx.Observable.create(obs => pressObs   = obs),
+    this.release = Rx.Observable.create(obs => releaseObs = obs),
+    this.update  = Rx.Observable.create(obs => updateObs  = obs);
+
+    var midiListener = function (e, device, index) {
+      switch(e.data[0]) {
+        case 128: // Release
+          releaseObs.onNext([index, e.data[1], e.data[2]]);
+          break;
+        case 144: // Press
+          pressObs.onNext([index, e.data[1], e.data[2]])
+          break;
+        case 176: // Update
+          updateObs.onNext([index, e.data[1], e.data[2]])
+          break;
+      }
+    }
+
     this.devices.forEach(function (device, index) {
       if (device.type === 'midi') {
-        devices.input.onmidimessage = function (e) {
-          switch(e.data[0]) {
-            case 128: // Release
-
-            case 144: // Press
-
-            case 176: // Update
-
-          }
+        device.input.onmidimessage = function (e) {
+          midiListener(e, device, index)
         }
       }
-    })
+      else if (device.type === 'keyboard') {
+        window.addEventListener('keydown', function (e) {
+          pressObs && pressObs.onNext([index, e.keyCode, 0])
+        })
+        window.addEventListener('keyup', function (e) {
+          releaseObs && releaseObs.onNext([index, e.keyCode, 0])
+        })
+      }
+    });
   }
-
-
 }
 
 /*

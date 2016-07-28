@@ -8,10 +8,10 @@
 class AssetBank {
 
   constructor (assetsList) {
-    this.list = assetsList;
-    this.audioContext = new AudioContext();
-    this.sounds = [];
-    this.images = [];
+    this.list = assetsList
+    this.audioContext = new AudioContext()
+    this.sounds = []
+    this.images = []
   }
 
   /**
@@ -21,9 +21,9 @@ class AssetBank {
    * @return {promise} Is the load a success?
    */
   load () {
-    var soundsLoad = this.list.sounds.map(this.loadSound.bind(this));
-    var imagesLoad = this.list.sprites.map(this.loadImage.bind(this));
-    return Promise.all(soundsLoad.concat(imagesLoad));
+    var soundsLoad = this.list.sounds.map(this.loadSound.bind(this))
+    var imagesLoad = this.list.sprites.map(this.loadImage.bind(this))
+    return Promise.all(soundsLoad.concat(imagesLoad))
   }
 
   /**
@@ -34,12 +34,17 @@ class AssetBank {
    */
   loadSound (url, index) {
     return fetch(url)
-      .then(response => response.arrayBuffer())
-      .then(function (data) {
-        this.audioContext.decodeAudioData(data, function(buffer) {
-          this.sounds[index] = buffer;
-        }.bind(this));
-      }.bind(this));
+      .then(response => {
+        if (response.status >= 300 || response.status < 200) {
+          throw new Error('Cannot load: ' + url + ' [' + response.status + ']')
+        }
+        return response.arrayBuffer()
+      })
+      .then(data => {
+        this.audioContext.decodeAudioData(data, buffer => {
+          this.sounds[index] = buffer
+        })
+      })
   }
 
   /**
@@ -50,13 +55,21 @@ class AssetBank {
    */
   loadImage (imgObj, index) {
     return new Promise(function (resolve, reject) {
-      var img = new Image();
-      img.onload = resolve;
-      img.onerror = reject;
-      img.src = imgObj.url;
+      var img = new Image()
+      img.onload = resolve
+      img.onerror = reject
+      img.src = imgObj.url
 
-      imgObj.data = img;
-      this.images[index] = imgObj;
-    }.bind(this));
+      imgObj.data = img
+      this.images[index] = imgObj
+    }.bind(this))
+    .catch(() => {throw new Error('Cannot load: ' + imgObj.url)})
+  }
+
+  followBackError (callback) {
+    return function (e) {
+      callback(e);
+      throw e;
+    }
   }
 }
