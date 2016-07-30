@@ -7,6 +7,10 @@
  */
 class AssetBank {
 
+  /**
+   * Init the object and setup the session AudioContext
+   * @param  {Object} assetsList List of assets to load
+   */
   constructor (assetsList) {
     this.list = assetsList
     this.audioContext = new AudioContext()
@@ -64,12 +68,5 @@ class AssetBank {
       this.images[index] = imgObj
     }.bind(this))
     .catch(() => {throw new Error('Cannot load: ' + imgObj.url)})
-  }
-
-  followBackError (callback) {
-    return function (e) {
-      callback(e);
-      throw e;
-    }
   }
 }
