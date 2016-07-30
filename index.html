@@ -1,6 +1,10 @@
 <html>
-  <title>MashupRx</title>
-  <link rel="stylesheet" href="style.css"/>
+  <head>
+    <title>MashupRx</title>
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+
+  <body></body>
 
   <!-- Le scripts -->
   <script src="vendors/rx.all.js"></script>
@@ -12,7 +16,7 @@
   <script src="scripts/Telepromptr.js"></script>
   <script src="scripts/Maestro.js"></script>
   <script>
-    var theMashup = new MashupRx(document.documentElement);
+    var theMashup = new MashupRx(document.body);
     theMashup
       .boot('model.keyboard.json')
       .then(() => console.log('GO!'))
