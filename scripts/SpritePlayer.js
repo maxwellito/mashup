@@ -154,7 +154,7 @@ class SpritePlayer {
         y = 0
 
     var byteLength = cc.data.length
-    for (var i = 0 i < byteLength i++) {
+    for (var i = 0; i < byteLength; i++) {
       if (i % 4 > 1) {
         continue
       }
