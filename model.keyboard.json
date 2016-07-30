@@ -7,141 +7,17 @@
   },
   "devices": [
     {
-      "type": "midi",
-      "name": "MPK mini"
-    },
-    {
       "type": "keyboard"
     }
   ],
   "workspaces": [
     [
-      {
-        "on": "press",
-        "key": 65,
-        "device": 0,
-        "actions": [
-          {
-            "type": "sound",
-            "channel": 1,
-            "index": 1,
-            "startAt": 220
-          },
-          {
-            "type": "sprite",
-            "channel": 1,
-            "index": 1,
-            "startAt": 220
-          }
-        ]
-      },
-      {
-        "on": "press",
-        "key": 67,
-        "device": 0,
-        "actions": [
-          {
-            "type": "sound",
-            "channel": 1,
-            "index": 0,
-            "startAt": 6164,
-            "duration": 650
-          },
-          {
-            "type": "sprite",
-            "channel": 1,
-            "index": 0,
-            "startAt": 220
-          }
-        ]
-      },
-      {
-        "on": "press",
-        "key": 69,
-        "device": 0,
-        "actions": [
-          {
-            "type": "sound",
-            "channel": 1,
-            "index": 3,
-            "startAt": 6164,
-            "duration": 650
-          },
-          {
-            "type": "sprite",
-            "channel": 1,
-            "index": 3,
-            "startAt": 220
-          }
-        ]
-      },
-      {
-        "on": "press",
-        "key": 71,
-        "device": 0,
-        "actions": [
-          {
-            "type": "sound",
-            "channel": 1,
-            "index": 2,
-            "startAt": 6164,
-            "duration": 650
-          },
-          {
-            "type": "sprite",
-            "channel": 1,
-            "index": 2,
-            "startAt": 220
-          }
-        ]
-      },
-      {
-        "on": "press",
-        "key": 60,
-        "device": 0,
-        "actions": [
-          {
-            "type": "sound",
-            "channel": 1,
-            "index": 4,
-            "startAt": 6164,
-            "duration": 650
-          },
-          {
-            "type": "sprite",
-            "channel": 1,
-            "index": 4,
-            "startAt": 220
-          }
-        ]
-      },
-      {
-        "on": "press",
-        "key": 62,
-        "device": 0,
-        "actions": [
-          {
-            "type": "sound",
-            "channel": 1,
-            "index": 5,
-            "startAt": 6164,
-            "duration": 650
-          },
-          {
-            "type": "sprite",
-            "channel": 1,
-            "index": 6,
-            "startAt": 220
-          }
-        ]
-      },
-
 
 
       {
         "on": "press",
         "key": 85,
-        "device": 1,
+        "device": 0,
         "actions": [
           {
             "type": "sound",
@@ -160,7 +36,7 @@
       {
         "on": "press",
         "key": 73,
-        "device": 1,
+        "device": 0,
         "actions": [
           {
             "type": "sound",
@@ -180,7 +56,7 @@
       {
         "on": "press",
         "key": 79,
-        "device": 1,
+        "device": 0,
         "actions": [
           {
             "type": "sound",
@@ -200,7 +76,7 @@
       {
         "on": "press",
         "key": 80,
-        "device": 1,
+        "device": 0,
         "actions": [
           {
             "type": "sound",
@@ -220,7 +96,7 @@
       {
         "on": "press",
         "key": 82,
-        "device": 1,
+        "device": 0,
         "actions": [
           {
             "type": "sound",
@@ -240,7 +116,7 @@
       {
         "on": "press",
         "key": 84,
-        "device": 1,
+        "device": 0,
         "actions": [
           {
             "type": "sound",
