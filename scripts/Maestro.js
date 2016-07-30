@@ -67,14 +67,14 @@ class Maestro {
    * @return {Maestro}      Current Maestro instance
    */
   loadWorkspace (index) {
-    this.pressEvt = [];
-    this.releaseEvt = [];
-    this.updateEvt = [];
+    this.pressEvt = []
+    this.releaseEvt = []
+    this.updateEvt = []
 
     this
       .workspaces[index]
       .forEach(function (i) {
-        let streamName = i.on + 'Evt';
+        let streamName = i.on + 'Evt'
         this[streamName][i.device] = this[streamName][i.device] || []
         this[streamName][i.device][i.key] = i.actions
         console.log(streamName, i.device, i.key, '-', i.actions)

@@ -102,7 +102,7 @@ class SpritePlayer {
     this.ctx.drawImage(this.media.data,
                        fx, fy, this.width, this.height,
                         0,  0, this.width, this.height)
-    if (this.inputOn) this.broken()
+    if (this.inputOn) this.delay()
     this.mediaIndex = index
   }
 
