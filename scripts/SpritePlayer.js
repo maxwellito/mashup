@@ -44,10 +44,10 @@ class SpritePlayer {
     this.media = sprite
     this.mediaIndex = 0
     this.inputOn = true
-    this.input = Math.floor(Math.random() * 32)
+    this.input = Math.floor(Math.random() * 120)
     this.iStart = .221233
     this.iEnd   = .6
-    this.iDelay = .11
+    this.iDelay = Math.random()
     console.log('>>>>', this.input)
     this.mediaFramerate = 1000 / sprite.fps
   }
@@ -102,7 +102,7 @@ class SpritePlayer {
     this.ctx.drawImage(this.media.data,
                        fx, fy, this.width, this.height,
                         0,  0, this.width, this.height)
-    if (this.inputOn) this.delay()
+    if (this.inputOn) spriteFilters.delay(this.ctx, this.input)
     this.mediaIndex = index
   }
 
@@ -115,58 +115,5 @@ class SpritePlayer {
     var frameIndex = Math.floor(now / this.mediaFramerate) % this.media.length
     this.showPicture(frameIndex)
     this.loop = requestAnimationFrame(this.runnerBinded)
-  }
-
-  // Filters
-  broken () {
-    var cc = this.ctx.getImageData(0, 0, this.width, this.height),
-      pStart = Math.round(421500 * this.iStart),
-      pStartP = pStart - Math.round(1200 * this.iDelay),
-      pEnd = pStart + Math.round(421500 * this.iEnd)
-
-    cc.data.copyWithin(pStartP, pStart, pEnd)
-    this.ctx.putImageData(cc,0,0)
-  }
-
-  delay () {
-    var cc = this.ctx.getImageData(0, 0, this.width, this.height),
-      originalData = this.ctx.getImageData(0, 0, this.width, this.height).data
-
-    var input = Math.max(0, Math.min(127, this.input))
-    var v = [
-      input / 2,
-      input / 16,
-      input / 4,
-      input / 8
-    ]
-
-    var ax = v[input       % 4],
-        ay = v[(input + 1) % 4],
-        bx = v[(input + 2) % 4],
-        by = v[(input + 3) % 4]
-
-    ax = Math.floor(ax) * (ax % 1 > .5 ? 1 : -1)
-    ay = Math.floor(ay) * (ay % 1 > .5 ? 1 : -1)
-    bx = Math.floor(bx) * (bx % 1 > .5 ? 1 : -1)
-    by = Math.floor(by) * (by % 1 > .5 ? 1 : -1)
-
-    var x = 0,
-        y = 0
-
-    var byteLength = cc.data.length
-    for (var i = 0; i < byteLength; i++) {
-      if (i % 4 > 1) {
-        continue
-      }
-      x = Math.floor(i % (this.width * 4) / 4)
-      y = Math.floor(i / (this.width * 4))
-      if (i % 4 === 0) {
-        cc.data[i] = originalData[((((x + ax) % this.width) + ((y + ay) % this.height) * this.width)) * 4]
-      }
-      else {
-        cc.data[i] = originalData[((((x + bx) % this.width) + ((y + by) % this.height) * this.width)) * 4 + 1]
-      }
-    }
-    this.ctx.putImageData(cc, 0, 0)
   }
 }
