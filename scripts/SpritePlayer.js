@@ -44,7 +44,8 @@ class SpritePlayer {
     this.media = sprite
     this.mediaIndex = 0
     this.inputOn = true
-    this.input = Math.floor(Math.random() * 120)
+    this.input = (this.input || 0) + 1
+    this.input = Math.floor(Math.random() * 12)
     this.iStart = .221233
     this.iEnd   = .6
     this.iDelay = Math.random()
@@ -102,6 +103,7 @@ class SpritePlayer {
     this.ctx.drawImage(this.media.data,
                        fx, fy, this.width, this.height,
                         0,  0, this.width, this.height)
+    if (this.inputOn) spriteFilters.vcr(this.ctx, this.input)
     if (this.inputOn) spriteFilters.delay(this.ctx, this.input)
     this.mediaIndex = index
   }
