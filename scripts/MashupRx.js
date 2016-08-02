@@ -49,7 +49,14 @@ class MashupRx {
    */
   setConfig (config) {
     this.config = config
-    this.promptr.addLine('Config ready')
+
+    if (config.info) {
+      this.promptr.addLine(config.info.title, 'highlight')
+      this.promptr.addLine(config.info.instructions, 'note')
+    }
+    else {
+      this.promptr.addLine('Config ready')
+    }
     return this
   }
 

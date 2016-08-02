@@ -5,6 +5,11 @@
       "height": 180
     }
   },
+  "info": {
+    "title": "Psychocats",
+    "description": "Mashup with samples from 'Off with their heads' A-Trak remix. Powered by crazy cats.",
+    "instructions": "Simple base for now. Not using MIDI keyboards, only standard keyboard. 6 samples triggered on the keys : E, R, U, I, O, P."
+  },
   "devices": [
     {
       "type": "keyboard"

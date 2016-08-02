@@ -20,6 +20,16 @@ html, body, canvas {
   display: block;
 }
 
+.telepromptr .highlight {
+  color: #000;
+  background-color: #fff;
+}
+
+.telepromptr .note {
+  padding-left: .5em;
+  border-left: .5em solid white;
+}
+
 .telepromptr .error {
   color: #f00;
 }
