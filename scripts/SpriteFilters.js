@@ -124,25 +124,52 @@ spriteFilters = {
 
     var cc = context.getImageData(0, 0, width, height)
 
-    for (var i = 0; i < pixQte; i++) {
-      let pixVal = fff[i % fffLength],
-          pos = ((startPoint + i) % pixLength) * 4,
-          t = i % 4 + 4
+    var countdown = 1;
+    var sqrt = Math.sqrt(pixQte)
 
-      if (pixVal === 2) {
-        cc.data[pos]   = Math.min(cc.data[pos] << t, 255)
-        cc.data[pos+1] = Math.min(cc.data[pos] << t, 255)
-        cc.data[pos+2] = Math.min(cc.data[pos] << t, 255)
+    for (var i = 0; i < pixQte; i++) {
+
+
+
+      let pos = ((startPoint + i) % pixLength) * 4,
+          p = Math.pow(i/pixQte, 2),
+          t = Math.floor((1 - p) * 255) //(i & 1) ? 255 : ((i & 2) ? 127 : 64),
+          tt = Math.floor((1 - p) * 4)
+
+      // if (i % 100 == 0) console.log(t)
+
+      if (countdown > 0) {
+        countdown--
+        cc.data[pos]   >>= tt
+        cc.data[pos+1] >>= tt
+        cc.data[pos+2] >>= tt
+        if (countdown === 0) countdown = -(4 + (i & 3))
       }
       else {
-        cc.data[pos]   = cc.data[pos] >> t
-        cc.data[pos+1] = cc.data[pos+1] >> t
-        cc.data[pos+2] = cc.data[pos+2] >> t
+        cc.data[pos]   |= t
+        cc.data[pos+1] |= t
+        cc.data[pos+2] |= t
+
+        countdown++
+        if (countdown === 1) countdown = Math.floor(sqrt * p) + (i & 7) + (Math.floor(i / 320) % 2 === 1 ? 320 : 0)
+        // console.log(countdown)
       }
+
+
+      // if (pixVal === 2) {
+      //   cc.data[pos]   = Math.min(cc.data[pos] << t, 255)
+      //   cc.data[pos+1] = Math.min(cc.data[pos] << t, 255)
+      //   cc.data[pos+2] = Math.min(cc.data[pos] << t, 255)
+      // }
+      // else {
+      //   cc.data[pos]   = cc.data[pos] >> t
+      //   cc.data[pos+1] = cc.data[pos+1] >> t
+      //   cc.data[pos+2] = cc.data[pos+2] >> t
+      // }
     }
 
     context.putImageData(cc, 0, 0)
-
+    // debugger;
   }
 
 
