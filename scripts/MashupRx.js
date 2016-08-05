@@ -15,6 +15,9 @@ class MashupRx {
   constructor (domContainer) {
     this.promptr = new Telepromptr(domContainer)
     this.promptr.addLine('MashupRx v0.1')
+    if (!~navigator.userAgent.indexOf('Chrome/5')) {
+      this.promptr.addLine('Chrome 51 is required to play', 'error')
+    }
   }
 
   loadConfigFile (configUrl) {
@@ -133,6 +136,6 @@ class MashupRx {
     )
 
     // Go fullscreen
-    document.body.webkitRequestFullscreen()
+    // document.body.webkitRequestFullscreen()
   }
 }
