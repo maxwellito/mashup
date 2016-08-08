@@ -27,6 +27,11 @@ html, body, canvas {
   content: "> ";
 }
 
+.telepromptr .input:after{
+  content: '_';
+  animation: blink 1s linear infinite;
+}
+
 .telepromptr .highlight {
   color: #000;
   background-color: #fff;
@@ -38,4 +43,13 @@ html, body, canvas {
 
 .telepromptr .error {
   color: #f00;
+}
+
+
+@keyframes blink
+{
+	  0% { opacity: 1; }
+   50% { opacity: 1; }
+   51% { opacity: 0; }
+  100% { opacity: 0; }
 }

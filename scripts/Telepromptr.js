@@ -61,7 +61,7 @@ class Telepromptr {
    * @return {Promise}    Wainting input promise
    */
   waitForInput (msg) {
-    this.addLine(msg + ' [press enter to continue]')
+    this.addLine(msg + ' [press enter to continue]', 'input')
     return new Promise((resolve) => {
       this.inputStack.push(resolve)
     })
