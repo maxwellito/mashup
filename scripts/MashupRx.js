@@ -135,6 +135,10 @@ class MashupRx {
       this.bank.audioContext
     )
 
+    this.maestro.cmdStream.subscribe(function (e) {
+      console.error('New CMD', e)
+    })
+
     // Go fullscreen
     // document.body.webkitRequestFullscreen()
   }

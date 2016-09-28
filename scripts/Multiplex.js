@@ -11,10 +11,39 @@ class Multiplex {
    * @param  {Array} deviceList Device list from the config
    */
   constructor (deviceList) {
-    this.devices     = deviceList
-    this.press       = null
-    this.release     = null
-    this.update      = null
+    this.devices = deviceList
+    this.outputObservable = Rx.Observable.create(observable => {
+
+      var midiListener = function (e, device, index) {
+        switch(e.data[0]) {
+          case 128: // Release
+            observable.next([Multiplex.RELEASE, index, e.data[1], e.data[2]])
+            break
+          case 144: // Press
+            observable.next([Multiplex.PRESS, index, e.data[1], e.data[2]])
+            break
+          case 176: // Update
+            observable.next([Multiplex.UPDATE, index, e.data[1], e.data[2]])
+            break
+        }
+      }
+
+      this.devices.forEach(function (device, index) {
+        if (device.type === 'midi') {
+          device.input.onmidimessage = function (e) {
+            midiListener(e, device, index)
+          }
+        }
+        else if (device.type === 'keyboard') {
+          window.addEventListener('keydown', function (e) {
+            observable.next([Multiplex.PRESS, index, e.keyCode, 0])
+          })
+          window.addEventListener('keyup', function (e) {
+            observable.next([Multiplex.RELEASE, index, e.keyCode, 0])
+          })
+        }
+      })
+    })
   }
 
   /**
@@ -58,49 +87,20 @@ class Multiplex {
   }
 
   /**
-   * Start listening to input to stream formatted
-   * data into the output streams:
-   * - `press`: Streams of press events
-   * - `release`: Stream of release events
-   * - `update`: Stream of update events (like potentiometer?)
+   * Start the observable to listen on input
+   * to stream formatted data
+   * [
+   * 	int: event type ID,
+   * 	int: device index,
+   * 	int: note,
+   * 	int: velocity
+   * ]
    */
-  start () {
-    var pressObs,
-        releaseObs,
-        updateObs
-
-    this.press   = Rx.Observable.create(obs => pressObs   = obs),
-    this.release = Rx.Observable.create(obs => releaseObs = obs),
-    this.update  = Rx.Observable.create(obs => updateObs  = obs)
-
-    var midiListener = function (e, device, index) {
-      switch(e.data[0]) {
-        case 128: // Release
-          releaseObs.onNext([index, e.data[1], e.data[2]])
-          break
-        case 144: // Press
-          pressObs.onNext([index, e.data[1], e.data[2]])
-          break
-        case 176: // Update
-          updateObs.onNext([index, e.data[1], e.data[2]])
-          break
-      }
-    }
-
-    this.devices.forEach(function (device, index) {
-      if (device.type === 'midi') {
-        device.input.onmidimessage = function (e) {
-          midiListener(e, device, index)
-        }
-      }
-      else if (device.type === 'keyboard') {
-        window.addEventListener('keydown', function (e) {
-          pressObs && pressObs.onNext([index, e.keyCode, 0])
-        })
-        window.addEventListener('keyup', function (e) {
-          releaseObs && releaseObs.onNext([index, e.keyCode, 0])
-        })
-      }
-    })
+  start (subscriber) {
+    this.outputObservable.subscribe(subscriber)
   }
 }
+
+Multiplex.PRESS   = 0x00
+Multiplex.RELEASE = 0x01
+Multiplex.UPDATE  = 0x02

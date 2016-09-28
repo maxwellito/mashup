@@ -11,3 +11,10 @@ When audio is played, only one sample can be played at the time on a single chan
 
 1. Load the config file
 2. From the modules used in the config, let's create and link them.
+
+## To do plan
+
+[ ]
+
+
+Group ALL command

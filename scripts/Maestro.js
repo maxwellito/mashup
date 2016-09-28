@@ -25,27 +25,8 @@ class Maestro {
     this.workspaces = workspaces
     this.multiplex  = mltplxr
     this.bank       = bank
-    this.wireInput()
-  }
 
-  /**
-   * Link the input streams from the multiplex
-   * to trigger events on output streams.
-   */
-  wireInput () {
-    this.multiplex.press.subscribe(e => {
-      console.log('press', e)
-      this.trigger(this.pressEvt, e)
-    })
-    this.multiplex.release.subscribe((e) => {
-      console.log('release', e)
-      this.trigger(this.releaseEvt, e)
-    })
-    this.multiplex.update.subscribe((e) => {
-      console.log('update', e)
-      this.trigger(this.updateEvt, e)
-    })
-    console.info('Subscribers set')
+    this.multiplex.start(this.trigger.bind(this))
   }
 
   /**
@@ -53,9 +34,9 @@ class Maestro {
    * @return {[type]} [description]
    */
   initialise () {
-    this.audioStream = Rx.Observable.create(obs => this.audioObs = obs)
-    this.videoStream = Rx.Observable.create(obs => this.videoObs = obs)
-    this.cmdStream   = Rx.Observable.create(obs => this.cmdObs = obs)
+    this.audioStream = new Rx.Subject();
+    this.videoStream = new Rx.Subject();
+    this.cmdStream   = new Rx.Subject();
     return this
   }
 
@@ -67,18 +48,19 @@ class Maestro {
    * @return {Maestro}      Current Maestro instance
    */
   loadWorkspace (index) {
-    this.pressEvt = []
-    this.releaseEvt = []
-    this.updateEvt = []
+    var eventList = []
 
     this
       .workspaces[index]
-      .forEach(function (i) {
-        let streamName = i.on + 'Evt'
-        this[streamName][i.device] = this[streamName][i.device] || []
-        this[streamName][i.device][i.key] = i.actions
-        console.log(streamName, i.device, i.key, '-', i.actions)
-      }.bind(this))
+      .forEach(i => {
+        let eventTypeId = Multiplex[i.on.toUpperCase()]
+        eventList[eventTypeId] = eventList[eventTypeId] || []
+        eventList[eventTypeId][i.device] = eventList[eventTypeId][i.device] || []
+        eventList[eventTypeId][i.device][i.key] = i.actions
+        console.log(eventTypeId, i.device, i.key, '-', i.actions)
+      })
+
+    this.eventList = eventList
   }
 
   /**
@@ -87,8 +69,12 @@ class Maestro {
    * @param  {Array}  events Arrays of key config events
    * @param  {Object} input  Data output from multiplex streams
    */
-  trigger (events, input) {
-    let actions = events[input[0]] && events[input[0]][input[1]]
+  trigger (input) {
+    let events, actions
+
+    events = this.eventList[input[0]]
+    if (!events) return
+    actions = events[input[1]] && events[input[1]][input[2]]
     actions && actions.forEach(i => this.findAndBroadcast(i))
   }
 
@@ -100,21 +86,25 @@ class Maestro {
   findAndBroadcast (action) {
     switch (action.type) {
       case 'sound':
-      this.audioObs.onNext({
+      this.audioStream.next({
         channel: action.channel,
         media: this.bank.sounds[action.index]
       })
       break
 
       case 'sprite':
-      this.videoObs.onNext({
+      this.videoStream.next({
         channel: action.channel,
         media: this.bank.images[action.index]
       })
       break
 
       case 'cmd':
-      // Nothing for now
+      this.cmdStream.next({
+        channel: action.channel || null,
+        name: action.name,
+        status: action.status
+      })
       break
     }
   }

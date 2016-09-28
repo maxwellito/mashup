@@ -44,8 +44,8 @@ class SpritePlayer {
     this.media = sprite
     this.mediaIndex = 0
     this.inputOn = true
-    this.input = (this.input || 0) + 1
-    this.input = Math.floor(Math.random() * 12)
+    this.input = (((this.input || 0) + 4) % 128)
+    // this.input = Math.floor(Math.random() * 12)
     this.iStart = .221233
     this.iEnd   = .6
     this.iDelay = Math.random()

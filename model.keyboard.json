@@ -35,6 +35,10 @@
             "channel": 1,
             "index": 1,
             "startAt": 220
+          },
+          {
+            "type": "video_filter",
+            "status": "start"
           }
         ]
       },
