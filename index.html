@@ -17,9 +17,10 @@
   <script src="scripts/Telepromptr.js"></script>
   <script src="scripts/Maestro.js"></script>
   <script>
-    var theMashup = new MashupRx(document.body);
+    var theMashup = new MashupRx(document.body)
+    var configPath = (location.hash && location.hash.substr(1)) || 'model.keyboard.json'
     theMashup
-      .boot('model.keyboard.json')
+      .boot(configPath)
       .then(() => console.log('GO!'))
   </script>
 </html>
