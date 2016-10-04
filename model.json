@@ -135,6 +135,41 @@
           }
         ]
       },
+      {
+        "on": "press",
+        "key": 59,
+        "device": 0,
+        "actions": [
+          {
+            "cmd": "sound",
+            "channel": 1,
+            "index": 7,
+            "startAt": 6164,
+            "duration": 650
+          },
+          {
+            "cmd": "sprite",
+            "channel": 1,
+            "index": 8,
+            "startAt": 220
+          },
+          {
+            "cmd": "filter_start",
+            "name": "glitch"
+          }
+        ]
+      },
+      {
+        "on": "release",
+        "key": 59,
+        "device": 0,
+        "actions": [
+          {
+            "cmd": "filter_end",
+            "name": "glitch"
+          }
+        ]
+      },
 
 
 
@@ -232,7 +267,7 @@
           {
             "cmd": "sprite",
             "channel": 1,
-            "index": 7,
+            "index": 6,
             "startAt": 220
           }
         ]
@@ -253,26 +288,6 @@
             "cmd": "sprite",
             "channel": 1,
             "index": 6,
-            "startAt": 220
-          }
-        ]
-      },
-      {
-        "on": "press",
-        "key": 81,
-        "device": 1,
-        "actions": [
-          {
-            "cmd": "sound",
-            "channel": 1,
-            "index": 7,
-            "startAt": 6164,
-            "duration": 650
-          },
-          {
-            "cmd": "sprite",
-            "channel": 1,
-            "index": 8,
             "startAt": 220
           }
         ]
@@ -342,7 +357,7 @@
       {
         "url": "assets/cci/cci.jpg",
         "columns": 5,
-        "length": 10,
+        "length": 50,
         "fps": 10
       }
     ]

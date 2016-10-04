@@ -160,6 +160,21 @@
             "channel": 1,
             "index": 8,
             "startAt": 220
+          },
+          {
+            "cmd": "filter_start",
+            "name": "glitch"
+          }
+        ]
+      },
+      {
+        "on": "release",
+        "key": 69,
+        "device": 0,
+        "actions": [
+          {
+            "cmd": "filter_end",
+            "name": "glitch"
           }
         ]
       }

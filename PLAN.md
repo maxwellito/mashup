@@ -20,7 +20,7 @@ When audio is played, only one sample can be played at the time on a single chan
 
 ## To do plan
 
-[ ]
-
-
-Group ALL command
+- Add video filters on the fly
+- Use variables for filters
+- Set up channels
+- Set up audio filters

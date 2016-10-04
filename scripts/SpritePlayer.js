@@ -30,11 +30,39 @@ class SpritePlayer {
     this.runnerBinded = this.frameRunner.bind(this)
     obs
       .filter(e => ~SpritePlayer.CMD_LIST.indexOf(e.cmd))
-      .subscribe(e => {
-        this.onloop = e.loop
-        this.setSprite(e.media)
-        this.play()
+      .subscribe(this.router.bind(this))
+  }
+
+  router (e) {
+    switch (e.cmd) {
+    case 'sprite':
+      this.onloop = e.loop
+      this.setSprite(e.media)
+      this.play()
+      break
+
+    case 'filter_start':
+      this.filters.push({
+        filter: spriteFilters[e.name],
+        input: () => Math.floor(Math.random() * 64)
       })
+      break
+
+    case 'filter_end':
+      for (let i = this.filters.length - 1; i >= 0; i--) {
+        if (this.filters[i].filter === spriteFilters[e.name]) {
+          this.filters.splice(i, 1)
+          return
+        }
+      }
+      break
+    }
+  }
+
+  processFilter () {
+    this.filters.forEach(f => {
+      f.filter(this.ctx, f.input())
+    })
   }
 
   /**
@@ -105,8 +133,8 @@ class SpritePlayer {
     this.ctx.drawImage(this.media.data,
                        fx, fy, this.width, this.height,
                         0,  0, this.width, this.height)
-    if (this.inputOn) spriteFilters.vcr(this.ctx, this.input)
-    if (this.inputOn) spriteFilters.delay(this.ctx, this.input % 16)
+
+    this.processFilter()
     this.mediaIndex = index
   }
 
@@ -129,5 +157,7 @@ class SpritePlayer {
 }
 
 SpritePlayer.CMD_LIST = [
-  'sprite'
+  'sprite',
+  'filter_start',
+  'filter_end'
 ]
