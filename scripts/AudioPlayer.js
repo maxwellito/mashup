@@ -14,9 +14,12 @@ class AudioPlayer {
    */
   constructor (obs, audioContext) {
     this.audioContext = audioContext
-    obs.subscribe(e => {
-      this.play(e.media, false)
-    })
+    obs
+      .filter(e => ~AudioPlayer.CMD_LIST.indexOf(e.cmd))
+      .subscribe(e => {
+        console.info('>>',e)
+        this.play(e.media, false)
+      })
   }
 
   /**
@@ -35,3 +38,7 @@ class AudioPlayer {
     return source
   }
 }
+
+AudioPlayer.CMD_LIST = [
+  'sound'
+]

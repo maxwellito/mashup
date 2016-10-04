@@ -28,10 +28,13 @@ class SpritePlayer {
     this.input = 44
 
     this.runnerBinded = this.frameRunner.bind(this)
-    obs.subscribe(e => {
-      this.setSprite(e.media)
-      this.play()
-    })
+    obs
+      .filter(e => ~SpritePlayer.CMD_LIST.indexOf(e.cmd))
+      .subscribe(e => {
+        this.onloop = e.loop
+        this.setSprite(e.media)
+        this.play()
+      })
   }
 
   /**
@@ -49,7 +52,6 @@ class SpritePlayer {
     this.iStart = .221233
     this.iEnd   = .6
     this.iDelay = Math.random()
-    console.log('>>>>', this.input)
     this.mediaFramerate = 1000 / sprite.fps
   }
 
@@ -104,7 +106,7 @@ class SpritePlayer {
                        fx, fy, this.width, this.height,
                         0,  0, this.width, this.height)
     if (this.inputOn) spriteFilters.vcr(this.ctx, this.input)
-    if (this.inputOn) spriteFilters.delay(this.ctx, this.input)
+    if (this.inputOn) spriteFilters.delay(this.ctx, this.input % 16)
     this.mediaIndex = index
   }
 
@@ -114,8 +116,18 @@ class SpritePlayer {
    */
   frameRunner () {
     var now = Date.now() - this.browserTimepoint
-    var frameIndex = Math.floor(now / this.mediaFramerate) % this.media.length
+    var frameIndex = Math.floor(now / this.mediaFramerate)
+    if (!this.onloop && frameIndex >= this.media.length) {
+      // ABORT
+      this.pause()
+      return
+    }
+    frameIndex %= this.media.length
     this.showPicture(frameIndex)
     this.loop = requestAnimationFrame(this.runnerBinded)
   }
 }
+
+SpritePlayer.CMD_LIST = [
+  'sprite'
+]

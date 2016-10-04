@@ -16,7 +16,7 @@ class MashupRx {
     this.promptr = new Telepromptr(domContainer)
     this.promptr.addLine('MashupRx v0.1')
     if (!~navigator.userAgent.indexOf('Chrome/5')) {
-      this.promptr.addLine('Chrome 51 is required to play', 'error')
+      this.promptr.addLine('Chrome 51+ is recommended to play', 'error')
     }
   }
 
@@ -103,7 +103,6 @@ class MashupRx {
     return this.multiplex
       .initialise()
       .then(loopForDevice)
-      .then(() => this.multiplex.start())
   }
 
   /**
@@ -117,27 +116,27 @@ class MashupRx {
     this.promptr.destroy()
 
     // Set up the Maestro to manage media/data streams
-    this.maestro = new Maestro(this.config.workspaces, this.multiplex, this.bank)
-    this
-      .maestro
-      .initialise()
-      .loadWorkspace(0)
+    this.maestro = new Maestro(
+      this.config.workspaces,
+      this.multiplex,
+      this.bank
+    )
 
     // Init the players
     this.spritePlayer = new SpritePlayer(
       this.config.config.canvas.width,
       this.config.config.canvas.height,
-      this.maestro.videoStream
+      this.maestro.output
     )
 
     this.audioPlayer = new AudioPlayer(
-      this.maestro.audioStream,
+      this.maestro.output,
       this.bank.audioContext
     )
 
-    this.maestro.cmdStream.subscribe(function (e) {
-      console.error('New CMD', e)
-    })
+    // this.maestro.cmdStream.subscribe(function (e) {
+    //   console.error('New CMD', e)
+    // })
 
     // Go fullscreen
     // document.body.webkitRequestFullscreen()

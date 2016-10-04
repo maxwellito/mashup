@@ -2,14 +2,8 @@
  * Maestro class
  * The maestro is link between the AssetBank
  * and the input streams. It subscribe to the
- * input streams and output data across 3
- * observable: audio, video, cmd.
- *
- * The output streams are available via
- * the following properties:
- * - `audioStream`
- * - `videoStream`
- * - `cmdStream`
+ * input streams and output data via only one
+ * output stream.
  *
  */
 class Maestro {
@@ -26,18 +20,9 @@ class Maestro {
     this.multiplex  = mltplxr
     this.bank       = bank
 
+    this.loadWorkspace(0)
     this.multiplex.start(this.trigger.bind(this))
-  }
-
-  /**
-   * Set up the output streas.
-   * @return {[type]} [description]
-   */
-  initialise () {
-    this.audioStream = new Rx.Subject();
-    this.videoStream = new Rx.Subject();
-    this.cmdStream   = new Rx.Subject();
-    return this
+    this.output = new Rx.Subject()
   }
 
   /**
@@ -57,7 +42,15 @@ class Maestro {
         eventList[eventTypeId] = eventList[eventTypeId] || []
         eventList[eventTypeId][i.device] = eventList[eventTypeId][i.device] || []
         eventList[eventTypeId][i.device][i.key] = i.actions
-        console.log(eventTypeId, i.device, i.key, '-', i.actions)
+
+        i.actions.forEach(a => {
+          if (a.cmd === 'sound') {
+            a.media = this.bank.sounds[a.index]
+          }
+          else if (a.cmd === 'sprite') {
+            a.media = this.bank.images[a.index]
+          }
+        })
       })
 
     this.eventList = eventList
@@ -75,37 +68,6 @@ class Maestro {
     events = this.eventList[input[0]]
     if (!events) return
     actions = events[input[1]] && events[input[1]][input[2]]
-    actions && actions.forEach(i => this.findAndBroadcast(i))
-  }
-
-  /**
-   * Trigger the input provided into the event/action
-   * item provided.
-   * @param  {Object} action Action to trigger
-   */
-  findAndBroadcast (action) {
-    switch (action.type) {
-      case 'sound':
-      this.audioStream.next({
-        channel: action.channel,
-        media: this.bank.sounds[action.index]
-      })
-      break
-
-      case 'sprite':
-      this.videoStream.next({
-        channel: action.channel,
-        media: this.bank.images[action.index]
-      })
-      break
-
-      case 'cmd':
-      this.cmdStream.next({
-        channel: action.channel || null,
-        name: action.name,
-        status: action.status
-      })
-      break
-    }
+    actions && actions.forEach(i => this.output.next(i))
   }
 }

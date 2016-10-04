@@ -10,7 +10,13 @@ When audio is played, only one sample can be played at the time on a single chan
 ## Procedure
 
 1. Load the config file
+> Should check if the config is correct
+
 2. From the modules used in the config, let's create and link them.
+> ES6 module are unfortunately impossible for now
+
+3. Load assets (images + sounds)
+
 
 ## To do plan
 

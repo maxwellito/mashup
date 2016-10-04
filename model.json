@@ -22,13 +22,13 @@
         "device": 0,
         "actions": [
           {
-            "type": "sound",
+            "cmd": "sound",
             "channel": 1,
             "index": 1,
             "startAt": 220
           },
           {
-            "type": "sprite",
+            "cmd": "sprite",
             "channel": 1,
             "index": 1,
             "startAt": 220
@@ -41,14 +41,14 @@
         "device": 0,
         "actions": [
           {
-            "type": "sound",
+            "cmd": "sound",
             "channel": 1,
             "index": 0,
             "startAt": 6164,
             "duration": 650
           },
           {
-            "type": "sprite",
+            "cmd": "sprite",
             "channel": 1,
             "index": 0,
             "startAt": 220
@@ -61,14 +61,14 @@
         "device": 0,
         "actions": [
           {
-            "type": "sound",
+            "cmd": "sound",
             "channel": 1,
             "index": 3,
             "startAt": 6164,
             "duration": 650
           },
           {
-            "type": "sprite",
+            "cmd": "sprite",
             "channel": 1,
             "index": 3,
             "startAt": 220
@@ -81,14 +81,14 @@
         "device": 0,
         "actions": [
           {
-            "type": "sound",
+            "cmd": "sound",
             "channel": 1,
             "index": 2,
             "startAt": 6164,
             "duration": 650
           },
           {
-            "type": "sprite",
+            "cmd": "sprite",
             "channel": 1,
             "index": 2,
             "startAt": 220
@@ -101,14 +101,14 @@
         "device": 0,
         "actions": [
           {
-            "type": "sound",
+            "cmd": "sound",
             "channel": 1,
             "index": 4,
             "startAt": 6164,
             "duration": 650
           },
           {
-            "type": "sprite",
+            "cmd": "sprite",
             "channel": 1,
             "index": 4,
             "startAt": 220
@@ -121,14 +121,14 @@
         "device": 0,
         "actions": [
           {
-            "type": "sound",
+            "cmd": "sound",
             "channel": 1,
             "index": 5,
             "startAt": 6164,
             "duration": 650
           },
           {
-            "type": "sprite",
+            "cmd": "sprite",
             "channel": 1,
             "index": 6,
             "startAt": 220
@@ -144,13 +144,13 @@
         "device": 1,
         "actions": [
           {
-            "type": "sound",
+            "cmd": "sound",
             "channel": 1,
             "index": 1,
             "startAt": 220
           },
           {
-            "type": "sprite",
+            "cmd": "sprite",
             "channel": 1,
             "index": 1,
             "startAt": 220
@@ -163,14 +163,14 @@
         "device": 1,
         "actions": [
           {
-            "type": "sound",
+            "cmd": "sound",
             "channel": 1,
             "index": 0,
             "startAt": 6164,
             "duration": 650
           },
           {
-            "type": "sprite",
+            "cmd": "sprite",
             "channel": 1,
             "index": 0,
             "startAt": 220
@@ -183,14 +183,14 @@
         "device": 1,
         "actions": [
           {
-            "type": "sound",
+            "cmd": "sound",
             "channel": 1,
             "index": 3,
             "startAt": 6164,
             "duration": 650
           },
           {
-            "type": "sprite",
+            "cmd": "sprite",
             "channel": 1,
             "index": 3,
             "startAt": 220
@@ -203,14 +203,14 @@
         "device": 1,
         "actions": [
           {
-            "type": "sound",
+            "cmd": "sound",
             "channel": 1,
             "index": 2,
             "startAt": 6164,
             "duration": 650
           },
           {
-            "type": "sprite",
+            "cmd": "sprite",
             "channel": 1,
             "index": 2,
             "startAt": 220
@@ -223,14 +223,14 @@
         "device": 1,
         "actions": [
           {
-            "type": "sound",
+            "cmd": "sound",
             "channel": 1,
             "index": 4,
             "startAt": 6164,
             "duration": 650
           },
           {
-            "type": "sprite",
+            "cmd": "sprite",
             "channel": 1,
             "index": 7,
             "startAt": 220
@@ -243,16 +243,36 @@
         "device": 1,
         "actions": [
           {
-            "type": "sound",
+            "cmd": "sound",
             "channel": 1,
             "index": 5,
             "startAt": 6164,
             "duration": 650
           },
           {
-            "type": "sprite",
+            "cmd": "sprite",
             "channel": 1,
             "index": 6,
+            "startAt": 220
+          }
+        ]
+      },
+      {
+        "on": "press",
+        "key": 81,
+        "device": 1,
+        "actions": [
+          {
+            "cmd": "sound",
+            "channel": 1,
+            "index": 7,
+            "startAt": 6164,
+            "duration": 650
+          },
+          {
+            "cmd": "sprite",
+            "channel": 1,
+            "index": 8,
             "startAt": 220
           }
         ]
@@ -267,7 +287,8 @@
       "assets/headsWillRoll/hwr_004.wav",
       "assets/headsWillRoll/hwr_005.wav",
       "assets/headsWillRoll/hwr_006.wav",
-      "assets/kick.wav"
+      "assets/kick.wav",
+      "assets/cci/cci.wav"
     ],
     "sprites": [
       {
@@ -317,6 +338,12 @@
         "columns": 1,
         "length": 3,
         "fps": 20
+      },
+      {
+        "url": "assets/cci/cci.jpg",
+        "columns": 5,
+        "length": 10,
+        "fps": 10
       }
     ]
   }
