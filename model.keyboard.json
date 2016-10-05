@@ -139,7 +139,23 @@
             "cmd": "sprite",
             "channel": 1,
             "index": 6,
-            "startAt": 220
+            "startAt": 220,
+            "loop": true
+          },
+          {
+            "cmd": "filter_start",
+            "name": "glitch"
+          }
+        ]
+      },
+      {
+        "on": "release",
+        "key": 84,
+        "device": 0,
+        "actions": [
+          {
+            "cmd": "filter_end",
+            "name": "glitch"
           }
         ]
       },
@@ -153,7 +169,8 @@
             "channel": 1,
             "index": 7,
             "startAt": 6164,
-            "duration": 650
+            "duration": 650,
+            "channel": 0
           },
           {
             "cmd": "sprite",

@@ -14,11 +14,18 @@ class AudioPlayer {
    */
   constructor (obs, audioContext) {
     this.audioContext = audioContext
+    this.channels = []
     obs
       .filter(e => ~AudioPlayer.CMD_LIST.indexOf(e.cmd))
       .subscribe(e => {
-        console.info('>>',e)
-        this.play(e.media, false)
+        var sound = this.play(e.media, e.loop)
+        if (e.channel !== undefined) {
+          let previousSound = this.channels[e.channel];
+          if (previousSound) {
+            previousSound.stop()
+          }
+          this.channels[e.channel] = sound
+        }
       })
   }
 
