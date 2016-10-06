@@ -17,16 +17,30 @@ class AudioPlayer {
     this.channels = []
     obs
       .filter(e => ~AudioPlayer.CMD_LIST.indexOf(e.cmd))
-      .subscribe(e => {
-        var sound = this.play(e.media, e.loop)
-        if (e.channel !== undefined) {
-          let previousSound = this.channels[e.channel];
-          if (previousSound) {
-            previousSound.stop()
-          }
-          this.channels[e.channel] = sound
+      .subscribe(this.router.bind(this))
+  }
+
+  router (e) {
+    switch (e.cmd) {
+    case 'sound':
+      var sound = this.play(e.media, e.loop)
+      if (e.channel !== undefined) {
+        let previousSound = this.channels[e.channel];
+        if (previousSound) {
+          previousSound.stop()
         }
-      })
+        this.channels[e.channel] = sound
+      }
+      break
+    case 'stop_channel':
+      if (e.channel !== undefined) {
+        let previousSound = this.channels[e.channel];
+        if (previousSound) {
+          previousSound.stop()
+        }
+      }
+      break
+    }
   }
 
   /**
@@ -47,5 +61,6 @@ class AudioPlayer {
 }
 
 AudioPlayer.CMD_LIST = [
-  'sound'
+  'sound',
+  'stop_channel'
 ]

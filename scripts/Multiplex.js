@@ -15,6 +15,7 @@ class Multiplex {
     this.outputObservable = Rx.Observable.create(observable => {
 
       var midiListener = function (e, device, index) {
+        console.log('::', e.data[0], e.data[1], e.data[2])
         switch(e.data[0]) {
           case 128: // Release
             observable.next([Multiplex.RELEASE, index, e.data[1], e.data[2]])
@@ -23,7 +24,7 @@ class Multiplex {
             observable.next([Multiplex.PRESS, index, e.data[1], e.data[2]])
             break
           case 176: // Update
-            observable.next([Multiplex.UPDATE, index, e.data[1], e.data[2]])
+            observable.next([Multiplex.KNOB, index, e.data[1], e.data[2]])
             break
         }
       }
@@ -103,4 +104,4 @@ class Multiplex {
 
 Multiplex.PRESS   = 0x00
 Multiplex.RELEASE = 0x01
-Multiplex.UPDATE  = 0x02
+Multiplex.KNOB    = 0x02

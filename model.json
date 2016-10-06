@@ -183,6 +183,10 @@
           {
             "cmd": "filter_end",
             "name": "glitch"
+          },
+          {
+            "cmd": "stop_channel",
+            "channel": 1
           }
         ]
       },
